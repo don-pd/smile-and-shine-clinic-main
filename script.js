@@ -81,3 +81,46 @@
     }
   });
 })();
+
+// ========== BEFORE/AFTER COMPARISON SLIDER (Case 3) ==========
+(function () {
+  document.querySelectorAll('.ba-slider').forEach(function (slider) {
+    var before = slider.querySelector('.ba-slider-before');
+    var handle = slider.querySelector('.ba-slider-handle');
+    if (!before || !handle) return;
+
+    var dragging = false;
+
+    function setPos(clientX) {
+      var rect = slider.getBoundingClientRect();
+      var x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      var pct = (x / rect.width) * 100;
+      before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+      handle.style.left = pct + '%';
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      var x = e.touches ? e.touches[0].clientX : e.clientX;
+      setPos(x);
+    }
+
+    function onDown(e) {
+      dragging = true;
+      var x = e.touches ? e.touches[0].clientX : e.clientX;
+      setPos(x);
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function onUp() {
+      dragging = false;
+    }
+
+    slider.addEventListener('mousedown', onDown);
+    slider.addEventListener('touchstart', onDown, { passive: false });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchend', onUp);
+  });
+})();

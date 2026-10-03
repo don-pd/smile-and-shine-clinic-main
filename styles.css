@@ -581,7 +581,65 @@ section[id] { scroll-margin-top: 80px; }
   .ba-caption { padding: 18px 20px; }
   .ba-title { font-size: 20px; }
   .ba-desc { font-size: 14px; }
+}/* ========== CASE 3 — INTERACTIVE COMPARISON SLIDER ========== */
+.ba-image-wrap--slider { aspect-ratio: 1 / 1; }
+
+.ba-slider {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
 }
+.ba-slider img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+/* After image: bottom layer, full visible */
+.ba-slider-after { z-index: 1; }
+/* Before image: top layer, clipped to left half by default */
+.ba-slider-before {
+  z-index: 2;
+  clip-path: inset(0 50% 0 0);
+  transition: clip-path 0.05s linear;
+}
+/* Badges — override default positioning so they don't collide with the handle */
+.ba-slider .ba-badge-before { top: 12px; left: 12px; }
+.ba-slider .ba-badge-after  { bottom: 12px; left: auto; right: 12px; }
+/* Draggable handle */
+.ba-slider-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: rgba(255, 255, 255, 0.92);
+  z-index: 3;
+  pointer-events: none;
+}
+.ba-slider-handle svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #102b2c;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+/* Turn off the zoom-on-hover for the slider card (otherwise both images scale, looks messy) */
+.ba-card:hover .ba-image-wrap--slider img { transform: none; }
 
 /* ========== DIGITAL SCANNING & EXPRESS CROWNS ========== */
 .section-digital { padding: 56px 0; background: #ffffff; }
